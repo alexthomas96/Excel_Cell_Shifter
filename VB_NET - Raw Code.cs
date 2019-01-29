@@ -35,6 +35,6 @@ While Column_Number > 0
 End While
   ' Your functions / subs goes here
 outCell = Column_Name & System.Text.RegularExpressions.Regex.Replace(inArg,"[^/0-9]","").ToString
-If Column_Number < 0
+If (Column_Number < 0 Or System.Text.RegularExpressions.Regex.Replace(outCell,"[0-9]","").ToString = "" )
  outCell = "INVALID_ENTRY" 'error if value falls below column A (first column)
 End If
