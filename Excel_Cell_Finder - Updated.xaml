@@ -1,0 +1,100 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Main"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Cell_Name" Type="InArgument(x:String)" />
+    <x:Property Name="index_Offset" Type="InArgument(x:Int32)" />
+    <x:Property Name="out_Result" Type="OutArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>Main_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Excel Cell Mapping" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="out_index" />
+      <Variable x:TypeArguments="x:String" Name="Column_Name" />
+    </Sequence.Variables>
+    <ui:InvokeCode ContinueOnError="{x:Null}" Code="'in_Cell_Name (Input Paramter) : Name Of the current cell As a String eg : &quot;AB32&quot;&#xD;&#xA;' // in code inArg = in_Cell_Name&#xD;&#xA;&#xD;&#xA;'index_Offset (Input Parameter) : Offset To shift As an Integer eg : 3&#xD;&#xA;' // in code inOffset = index_Offset&#xD;&#xA;&#xD;&#xA;'out_Result (Output Parameter) : The shifted result As a String eg : &quot;AE32&quot;&#xD;&#xA;' // in code outCell = out_Result&#xD;&#xA;&#xD;&#xA;Dim cellArray() As Char 'Define a cell array &#xD;&#xA;cellArray = System.Text.RegularExpressions.Regex.Replace(inArg,&quot;[^/A-Z,a-z]&quot;,&quot;&quot;).ToCharArray 'Replace all non-alphabetic characters with null&#xD;&#xA;outArg = Convert.ToInt32((1 - (26 ^ cellArray.Length)) / (1 - 26)) 'Calculate number of sets to traverse the excel structure. eg : for input of cell &quot;ABC23&quot;, skip though sections A-Z, AA-ZZ, AAA-AAZ, ABA and ABB&#xD;&#xA;Dim arrayItem As Char&#xD;&#xA;Dim loopVar As Integer&#xD;&#xA;loopVar = 0&#xD;&#xA;'generate column number of given cell&#xD;&#xA;For Each arrayItem In cellArray 'loop through each array element&#xD;&#xA; If loopVar = (cellArray.Length - 1) Then&#xD;&#xA;          outArg = outArg + (Asc(arrayItem) - 65) 'calculate spacing / offset by difference of ASCII values for last item&#xD;&#xA;      Else&#xD;&#xA;          outArg = outArg + ((Asc(arrayItem) - 65) * Convert.ToInt32(26 ^ (cellArray.Length - loopVar - 1))) 'calculate spacing / offset by difference of ASCII values for other items by exponentiation to base 26&#xD;&#xA;      End If&#xD;&#xA;   loopVar = loopVar + 1&#xD;&#xA;Next&#xD;&#xA;&#xD;&#xA;Dim Column_Number As Integer&#xD;&#xA;Dim Column_Name As String&#xD;&#xA;Column_Name = &quot;&quot;&#xD;&#xA;Dim modulo As Integer&#xD;&#xA;Column_Number = outArg + inOffset 'shifted value by adding offset with column number &#xD;&#xA;While Column_Number &gt; 0&#xD;&#xA;    modulo = (Column_Number - 1) Mod 26&#xD;&#xA; Column_Name = Chr(65 + modulo).ToString() &amp; Column_Name 'obtain column name&#xD;&#xA; Column_Number = Convert.ToInt32((Column_Number - modulo) / 26) 'obtain final column number&#xD;&#xA;End While&#xD;&#xA;  ' Your functions / subs goes here&#xD;&#xA;outCell = Column_Name &amp; System.Text.RegularExpressions.Regex.Replace(inArg,&quot;[^/0-9]&quot;,&quot;&quot;).ToString&#xD;&#xA;If Column_Number &lt; 0&#xD;&#xA; outCell = &quot;INVALID_ENTRY&quot; 'error if value falls below column A (first column)&#xD;&#xA;End If" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+      <ui:InvokeCode.Arguments>
+        <OutArgument x:TypeArguments="x:Int32" x:Key="outArg">[out_index]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="inArg">[in_Cell_Name]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="inOffset">[index_Offset]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="outCell">[out_Result]</OutArgument>
+      </ui:InvokeCode.Arguments>
+    </ui:InvokeCode>
+    <sads:DebugSymbol.Symbol>dzpDOlxVc2Vyc1xuZGgwMDE0NVxEZXNrdG9wXEV4Y2VsX0NlbGxfRmluZGVyIC0gVXBkYXRlZC54YW1sBkgDVg4CAQFNBVQVAgECUkFSTQIBCVA+UEwCAQdPP09KAgEFUUBRTgIBAw==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="InvokeCode_1" sap:VirtualizedContainerService.HintSize="314.4,164.8" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="336.8,289.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="376.8,369.6" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
