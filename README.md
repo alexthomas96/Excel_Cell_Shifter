@@ -15,6 +15,7 @@ Code to shift excel cells and return cell name for a given offset.
 * out_Result _(Output Parameter)_ : The shifted result as a string
 > eg : "AE32"
 
+***
+
 Returns error `INVALID_ENTRY` in case the value falls below column A. 
 
-***
