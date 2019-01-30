@@ -1,7 +1,7 @@
 ![alt text](https://github.com/alexthomas96/Excel_Cell_Shifter/blob/master/excelicon.png "Image Source : https://www.flaticon.com/free-icon/excel_732220#term=excel&page=1&position=1")
 
 
-# Excel_Cell_Shifter 
+# Excel Cell Shifter 
 Code to shift excel cells and return cell name for a given offset. 
 > eg: Shift cell "AB32" by offset 3 results in "AE32"
 
