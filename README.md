@@ -1,6 +1,10 @@
+***
+
 # Excel_Cell_Shifter
 Code to shift excel cells and return cell name for a given offset. 
 eg: Shift cell "AB32" by offset 3 results in "AE32".
+
+***
 
 ### Usage : 
 * in_Cell_Name (Input Paramter) : Name of the current cell as a string 
@@ -12,4 +16,6 @@ eg: Shift cell "AB32" by offset 3 results in "AE32".
 * out_Result (Output Parameter) : The shifted result as a string
                                 eg : "AE32"
 
-Returns error "INVALID_ENTRY" in case the value falls below column A. 
+Returns error `INVALID_ENTRY` in case the value falls below column A. 
+
+***
